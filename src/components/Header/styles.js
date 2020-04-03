@@ -54,22 +54,24 @@ export const CardContentList = styled.div`
   width: 300px;
   left: calc(50% - 240px);
   top: calc(100% + 12px);
-  background: rgba(0, 0, 0, 0.1);
+  background: #fff;
   color: #000;
   border-radius: 4px;
   padding: 15px;
   text-align: center;
   display: ${(props) => (props.visible ? 'block' : 'none')};
+  box-shadow: var(--box-shadow);
   &::before {
     content: '';
     position: absolute;
-    left: calc(50% + 74px);
-    top: -20px;
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-bottom: 20px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+    left: calc(50% + 83px);
+    top: -11px;
+    width: 20px;
+    height: 20px;
+    transform: rotate(-45deg);
+    border-right: 1px solid #00000026;
+    border-top: 1px solid #00000026;
   }
 `;
 
