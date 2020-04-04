@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
 
 import {
   Container,
@@ -17,15 +18,21 @@ import logo from '~/assets/logo.svg';
 
 export default function Header() {
   const [visibleCard, setVisibleCard] = useState(false);
+  const history = useHistory();
 
   function handleToggleVisibleCard() {
     setVisibleCard(!visibleCard);
   }
 
+  function handleToCart() {
+    setVisibleCard(false);
+    history.push('/cart');
+  }
+
   return (
     <Container>
       <Content>
-        <Logo>
+        <Logo to="/">
           <img src={logo} alt="Logo DevHubShoes" />
         </Logo>
         <Card>
@@ -58,7 +65,9 @@ export default function Header() {
             <CardFooter>
               <h4>Subtotal</h4>
               <span>R$ 2.328,85</span>
-              <button type="button">Finalizar compra</button>
+              <button type="button" onClick={handleToCart}>
+                Finalizar compra
+              </button>
             </CardFooter>
           </CardContentList>
         </Card>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 export const Container = styled.header`
@@ -15,14 +16,14 @@ export const Content = styled.div`
   position: relative;
 `;
 
-export const Logo = styled.a`
+export const Logo = styled(Link)`
   text-decoration: none;
   img {
     height: 64px;
   }
 `;
 
-export const Card = styled.a`
+export const Card = styled.div`
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -123,5 +124,6 @@ export const CardFooter = styled.footer`
     text-transform: uppercase;
     line-height: 45px;
     border-radius: 4px;
+    outline: 0;
   }
 `;
