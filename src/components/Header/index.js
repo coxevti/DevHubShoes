@@ -17,6 +17,7 @@ import {
 
 import logo from '~/assets/logo.svg';
 import { formatPrice } from '~/utils/formatCurrency';
+import avatarsApi from '~/utils/avatarApi';
 
 export default function Header() {
   const [visibleCard, setVisibleCard] = useState(false);
@@ -44,10 +45,6 @@ export default function Header() {
   function handleToCart() {
     setVisibleCard(false);
     history.push('/cart');
-  }
-
-  function avatarsApi(name) {
-    return `https://ui-avatars.com/api/?name=${name}&background=F4EFFC&color=A28FD0&rounded=true`;
   }
 
   return (
