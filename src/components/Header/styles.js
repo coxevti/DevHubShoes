@@ -6,6 +6,10 @@ export const Container = styled.header`
   background: #fff;
   padding: 0 50px;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.24);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
 export const Content = styled.div`
@@ -73,6 +77,10 @@ export const CardContentList = styled.div`
     transform: rotate(-45deg);
     border-right: 1px solid #00000026;
     border-top: 1px solid #00000026;
+  }
+  h1 {
+    font-weight: bold;
+    padding: 20px 0;
   }
 `;
 
