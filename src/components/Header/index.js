@@ -16,12 +16,26 @@ import {
 } from './styles';
 
 import logo from '~/assets/logo.svg';
+import { formatPrice } from '~/utils/formatCurrency';
 
 export default function Header() {
   const [visibleCard, setVisibleCard] = useState(false);
   const history = useHistory();
 
   const cartSize = useSelector((state) => state.cart.length || 0);
+  const cart = useSelector((state) =>
+    state.cart.map((item) => ({
+      ...item,
+      subTotal: formatPrice(item.price * item.amount),
+    })),
+  );
+  const cartValueTotal = useSelector((state) =>
+    formatPrice(
+      state.cart.reduce((total, member) => {
+        return total + member.price * member.amount;
+      }, 0),
+    ),
+  );
 
   function handleToggleVisibleCard() {
     setVisibleCard(!visibleCard);
@@ -30,6 +44,10 @@ export default function Header() {
   function handleToCart() {
     setVisibleCard(false);
     history.push('/cart');
+  }
+
+  function avatarsApi(name) {
+    return `https://ui-avatars.com/api/?name=${name}&background=F4EFFC&color=A28FD0&rounded=true`;
   }
 
   return (
@@ -50,28 +68,33 @@ export default function Header() {
             visible={visibleCard}
             onMouseLeave={handleToggleVisibleCard}
           >
-            {/* <h1>Seu carrinho está vazio</h1> */}
-            <Scroll>
-              <CardContent>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-                  <li key={item}>
-                    <img
-                      src="https://ui-avatars.com/api/?name=Valdir+Coxev&background=F4EFFC&color=A28FD0&rounded=true"
-                      alt=""
-                    />
-                    <h4>Valdir Coxev</h4>
-                    <span>R$ 124,35</span>
-                  </li>
-                ))}
-              </CardContent>
-            </Scroll>
-            <CardFooter>
-              <h4>Subtotal</h4>
-              <span>R$ 2.328,85</span>
-              <button type="button" onClick={handleToCart}>
-                Finalizar compra
-              </button>
-            </CardFooter>
+            {cart.length === 0 ? (
+              <h1>Seu carrinho está vazio</h1>
+            ) : (
+              <>
+                <Scroll>
+                  <CardContent>
+                    {cart.map((item) => (
+                      <li key={item.id}>
+                        <img
+                          src={item.avatar_url || avatarsApi(item.name)}
+                          alt={item.name}
+                        />
+                        <h4>{item.name}</h4>
+                        <span>{item.subTotal}</span>
+                      </li>
+                    ))}
+                  </CardContent>
+                </Scroll>
+                <CardFooter>
+                  <h4>Subtotal</h4>
+                  <span>{cartValueTotal}</span>
+                  <button type="button" onClick={handleToCart}>
+                    Finalizar compra
+                  </button>
+                </CardFooter>
+              </>
+            )}
           </CardContentList>
         </Card>
       </Content>
