@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
 import {
   Container,
   Content,
@@ -19,6 +20,8 @@ import logo from '~/assets/logo.svg';
 export default function Header() {
   const [visibleCard, setVisibleCard] = useState(false);
   const history = useHistory();
+
+  const cartSize = useSelector((state) => state.cart.length || 0);
 
   function handleToggleVisibleCard() {
     setVisibleCard(!visibleCard);
@@ -40,7 +43,7 @@ export default function Header() {
             onMouseEnter={handleToggleVisibleCard}
             onClick={handleToggleVisibleCard}
           >
-            <span>0</span>
+            <span>{cartSize}</span>
             <FiShoppingCart size={36} color="#04d361" />
           </CardHeader>
           <CardContentList
