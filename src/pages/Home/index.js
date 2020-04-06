@@ -7,9 +7,11 @@ import { MemberList } from './styles';
 import api from '~/services/api';
 import * as CartActions from '~/store/modules/cart/actions';
 import { formatPrice } from '~/utils/formatCurrency';
+import Loading from '~/components/Loading';
 
 export default function Home() {
   const [members, setMember] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const amount = useSelector((state) =>
@@ -20,6 +22,7 @@ export default function Home() {
   );
 
   async function loadMembers() {
+    setLoading(true);
     let membersList = JSON.parse(localStorage.getItem('members'));
     const { reset } = JSON.parse(localStorage.getItem('x-ratelimit'));
     const rateLimitReset = isAfter(new Date(), Number(reset) * 1000);
@@ -45,6 +48,7 @@ export default function Home() {
       localStorage.setItem('members', JSON.stringify(membersList));
     }
     setMember(membersList);
+    setLoading(false);
   }
 
   function handleAddMember(item) {
@@ -55,7 +59,9 @@ export default function Home() {
     loadMembers();
   }, []);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <MemberList>
       {members.map((item) => (
         <li key={item.id}>
