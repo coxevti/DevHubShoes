@@ -24,28 +24,31 @@ export default function Home() {
   async function loadMembers() {
     setLoading(true);
     let membersList = JSON.parse(localStorage.getItem('members'));
-    const { reset } = JSON.parse(localStorage.getItem('x-ratelimit'));
-    const rateLimitReset = isAfter(new Date(), Number(reset) * 1000);
-    if (!membersList || rateLimitReset) {
-      const organizationMembers = await api.get(
-        '/orgs/facebook/members?page=1&per_page=57',
-      );
-      membersList = await Promise.all(
-        organizationMembers.data.map(async (item) => {
-          const user = await api.get(`/users/${item.login}`);
-          const { public_repos, followers, following } = user.data;
-          const price = parseFloat(
-            (public_repos * 0.8 + followers * 0.5 + following * 0.2).toFixed(2),
-          );
-          const priceFormat = formatPrice(price);
-          return {
-            ...user.data,
-            price,
-            priceFormat,
-          };
-        }),
-      );
-      localStorage.setItem('members', JSON.stringify(membersList));
+    if (!membersList) {
+      const ratelimit = JSON.parse(localStorage.getItem('x-ratelimit'));
+      if (!ratelimit || isAfter(new Date(), Number(ratelimit.reset) * 1000)) {
+        const organizationMembers = await api.get(
+          '/orgs/facebook/members?page=1&per_page=57',
+        );
+        membersList = await Promise.all(
+          organizationMembers.data.map(async (item) => {
+            const user = await api.get(`/users/${item.login}`);
+            const { public_repos, followers, following } = user.data;
+            const price = parseFloat(
+              (public_repos * 0.8 + followers * 0.5 + following * 0.2).toFixed(
+                2,
+              ),
+            );
+            const priceFormat = formatPrice(price);
+            return {
+              ...user.data,
+              price,
+              priceFormat,
+            };
+          }),
+        );
+        localStorage.setItem('members', JSON.stringify(membersList));
+      }
     }
     setMember(membersList);
     setLoading(false);
