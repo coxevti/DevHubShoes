@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   padding: 30px;
+  margin-top: 64px;
 `;
 
 export const CardMembers = styled.table`
   width: 100%;
   background: #fff;
   border-radius: 4px;
+  margin-bottom: 70px;
 
   @media (max-width: 767px) {
     display: flex;
@@ -37,6 +39,9 @@ export const CardMembers = styled.table`
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #eee;
+    &:last-child {
+      border-bottom: 0;
+    }
     td {
       padding: 12px;
       flex: 1;
@@ -65,7 +70,7 @@ export const CardMembers = styled.table`
           color: #666;
           padding: 6px;
           width: 50px;
-          text-align: right;
+          text-align: center;
           outline: none;
         }
       }
@@ -83,7 +88,10 @@ export const CardMembers = styled.table`
 `;
 
 export const CardMembersFooter = styled.footer`
-  margin-top: 30px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background: #fff;
   border-radius: 4px;
   display: flex;
