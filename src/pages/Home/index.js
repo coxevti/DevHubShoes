@@ -1,95 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
+import { isAfter } from 'date-fns';
 
 import { MemberList } from './styles';
+import api from '~/services/api';
+import * as CartActions from '~/store/modules/cart/actions';
+import { formatPrice } from '~/utils/formatCurrency';
 
 export default function Home() {
+  const [members, setMember] = useState([]);
+
+  const dispatch = useDispatch();
+  const amount = useSelector((state) =>
+    state.cart.reduce((amountSum, member) => {
+      amountSum[member.id] = member.amount;
+      return amountSum;
+    }, {}),
+  );
+
+  async function loadMembers() {
+    let membersList = JSON.parse(localStorage.getItem('members'));
+    const { reset } = JSON.parse(localStorage.getItem('x-ratelimit'));
+    const rateLimitReset = isAfter(new Date(), Number(reset) * 1000);
+    if (!membersList || rateLimitReset) {
+      const organizationMembers = await api.get(
+        '/orgs/facebook/members?page=1&per_page=57',
+      );
+      membersList = await Promise.all(
+        organizationMembers.data.map(async (item) => {
+          const user = await api.get(`/users/${item.login}`);
+          const { public_repos, followers, following } = user.data;
+          const price = parseFloat(
+            (public_repos * 0.8 + followers * 0.5 + following * 0.2).toFixed(2),
+          );
+          const priceFormat = formatPrice(price);
+          return {
+            ...user.data,
+            price,
+            priceFormat,
+          };
+        }),
+      );
+      localStorage.setItem('members', JSON.stringify(membersList));
+    }
+    setMember(membersList);
+  }
+
+  function handleAddMember(item) {
+    dispatch(CartActions.addToCartRequest(item));
+  }
+
+  useEffect(() => {
+    loadMembers();
+  }, []);
+
   return (
     <MemberList>
-      {[
-        {
-          id: 4564870,
-          avatar_url: 'https://avatars2.githubusercontent.com/u/4564870?v=4',
-          name: 'Alejandro García Salas',
-        },
-        {
-          id: 1550815,
-          avatar_url: 'https://avatars2.githubusercontent.com/u/1550815?v=4',
-          name: 'Alex Li',
-        },
-        {
-          id: 22417757,
-          avatar_url: 'https://avatars3.githubusercontent.com/u/22417757?v=4',
-          name: 'Ashley Chien',
-        },
-        {
-          id: 3586644,
-          avatar_url: 'https://avatars1.githubusercontent.com/u/3586644?v=4',
-          name: 'Dezhi “Andy” Fang',
-        },
-        {
-          id: 65,
-          avatar_url: 'https://avatars3.githubusercontent.com/u/6530351?v=4',
-          name: 'Diane Ko',
-        },
-        {
-          id: 4560,
-          avatar_url: 'https://avatars2.githubusercontent.com/u/4564870?v=4',
-          name: 'Alejandro García Salas',
-        },
-        {
-          id: 15,
-          avatar_url: 'https://avatars2.githubusercontent.com/u/1550815?v=4',
-          name: 'Alex Li',
-        },
-        {
-          id: 7757,
-          avatar_url: 'https://avatars3.githubusercontent.com/u/22417757?v=4',
-          name: 'Ashley Chien',
-        },
-        {
-          id: 35844,
-          avatar_url: 'https://avatars1.githubusercontent.com/u/3586644?v=4',
-          name: 'Dezhi “Andy” Fang',
-        },
-        {
-          id: 6530351,
-          avatar_url: 'https://avatars3.githubusercontent.com/u/6530351?v=4',
-          name: 'Diane Ko',
-        },
-        {
-          id: 45870,
-          avatar_url: 'https://avatars2.githubusercontent.com/u/4564870?v=4',
-          name: 'Alejandro García Salas',
-        },
-        {
-          id: 1815,
-          avatar_url: 'https://avatars2.githubusercontent.com/u/1550815?v=4',
-          name: 'Alex Li',
-        },
-        {
-          id: 22417,
-          avatar_url: 'https://avatars3.githubusercontent.com/u/22417757?v=4',
-          name: 'Ashley Chien',
-        },
-        {
-          id: 35854,
-          avatar_url: 'https://avatars1.githubusercontent.com/u/3586644?v=4',
-          name: 'Dezhi “Andy” Fang',
-        },
-        {
-          id: 6530354,
-          avatar_url: 'https://avatars3.githubusercontent.com/u/6530351?v=4',
-          name: 'Diane Ko',
-        },
-      ].map((item) => (
+      {members.map((item) => (
         <li key={item.id}>
           <img src={item.avatar_url} alt={item.name} />
           <strong>{item.name}</strong>
-          <span>R$ 54,35</span>
-          <button type="button">
+          <span>{item.priceFormat}</span>
+          <button type="button" onClick={() => handleAddMember(item)}>
             <div>
-              <FiShoppingCart size={16} color="#fff" />0
+              <FiShoppingCart size={16} color="#fff" />
+              {amount[item.id] || 0}
             </div>
             <span>Adicionar ao carrinho</span>
           </button>

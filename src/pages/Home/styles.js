@@ -6,6 +6,7 @@ export const MemberList = styled.div`
   gap: 20px;
   list-style: none;
   padding: 20px;
+  margin-top: 64px;
 
   @media (max-width: 450px) {
     display: grid;
@@ -41,8 +42,8 @@ export const MemberList = styled.div`
     > strong {
       font-size: 16px;
       line-height: 20px;
-      color: #333;
-      margin-top: 5px;
+      color: #9f9fa3;
+      margin-top: 10px;
       align-self: center;
       text-align: center;
     }
