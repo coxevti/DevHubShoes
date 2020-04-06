@@ -23,12 +23,12 @@ export default function Home() {
 
   async function loadMembers() {
     setLoading(true);
-    let membersList = JSON.parse(localStorage.getItem('members'));
-    if (!membersList) {
-      const ratelimit = JSON.parse(localStorage.getItem('x-ratelimit'));
+    let membersList = JSON.parse(localStorage.getItem('members')) || [];
+    const ratelimit = JSON.parse(localStorage.getItem('x-ratelimit')) || null;
+    if (!membersList.length || !ratelimit) {
       if (!ratelimit || isAfter(new Date(), Number(ratelimit.reset) * 1000)) {
         const organizationMembers = await api.get(
-          '/orgs/facebook/members?page=1&per_page=57',
+          '/orgs/airbnb/members?page=1&per_page=57',
         );
         membersList = await Promise.all(
           organizationMembers.data.map(async (item) => {
@@ -69,7 +69,7 @@ export default function Home() {
       {members.map((item) => (
         <li key={item.id}>
           <img src={item.avatar_url} alt={item.name} />
-          <strong>{item.name}</strong>
+          <strong>{item.name || item.login}</strong>
           <span>{item.priceFormat}</span>
           <button type="button" onClick={() => handleAddMember(item)}>
             <div>

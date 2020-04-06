@@ -75,9 +75,9 @@ export default function Header() {
                       <li key={item.id}>
                         <img
                           src={item.avatar_url || avatarsApi(item.name)}
-                          alt={item.name}
+                          alt={item.name || item.login}
                         />
-                        <h4>{item.name}</h4>
+                        <h4>{item.name || item.login}</h4>
                         <span>{item.subTotal}</span>
                       </li>
                     ))}

@@ -62,11 +62,11 @@ export default function Cart() {
                   <td>
                     <img
                       src={item.avatar_url || avatarsApi(item.name)}
-                      alt={item.name}
+                      alt={item.name || item.login}
                     />
                   </td>
                   <td>
-                    <strong>{item.name}</strong>
+                    <strong>{item.name || item.login}</strong>
                     <span>{item.priceFormat}</span>
                   </td>
                   <td>
