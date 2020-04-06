@@ -130,6 +130,7 @@ export const CardMembersFooter = styled.footer`
     font-weight: bold;
     text-transform: uppercase;
     border-radius: 4px;
+    outline: none;
   }
 `;
 
