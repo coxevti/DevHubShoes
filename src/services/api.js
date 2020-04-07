@@ -4,16 +4,12 @@ const api = axios.create({
   baseURL: 'https://api.github.com',
 });
 
-api.interceptors.response.use(
-  (response) => {
-    localStorage.setItem(
-      'x-ratelimit',
-      JSON.stringify({
-        remaining: response.headers['x-ratelimit-remaining'],
-        reset: response.headers['x-ratelimit-reset'],
-      }),
-    );
-    return response;
+api.interceptors.request.use(
+  (config) => {
+    config.headers = {
+      Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+    };
+    return config;
   },
   (error) => {
     return Promise.reject(error);
