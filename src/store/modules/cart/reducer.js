@@ -1,4 +1,5 @@
 import produce from 'immer';
+import storage from 'redux-persist/lib/storage';
 
 export default function Cart(state = [], action) {
   return produce(state, (draft) => {
@@ -20,6 +21,11 @@ export default function Cart(state = [], action) {
         if (memberIndex >= 0) {
           draft[memberIndex].amount = Number(action.amount);
         }
+        break;
+      }
+      case '@cart/CHECKOUT': {
+        storage.removeItem('persist:devhubshoes');
+        draft.map((item) => draft.splice(item, draft.length));
         break;
       }
       default:

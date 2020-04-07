@@ -45,6 +45,7 @@ export default function Header() {
   function handleToCart() {
     setVisibleCard(false);
     history.push('/cart');
+    window.scrollTo(0, 0);
   }
 
   return (

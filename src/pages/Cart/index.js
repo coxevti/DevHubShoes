@@ -42,6 +42,12 @@ export default function Cart() {
   function remove(id) {
     dispatch(CartActions.removeFromCart(id));
   }
+
+  function checkout() {
+    dispatch(CartActions.checkout());
+    window.scrollTo(0, 0);
+  }
+
   return (
     <Container>
       {cart.length > 0 ? (
@@ -97,7 +103,9 @@ export default function Cart() {
               <span>Valor total</span>
               <strong>{cartValueTotal}</strong>
             </div>
-            <button type="button">Finalizar Pedido</button>
+            <button type="button" onClick={checkout}>
+              Finalizar Pedido
+            </button>
           </CardMembersFooter>
         </>
       ) : (

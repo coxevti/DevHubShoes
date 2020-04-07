@@ -34,3 +34,9 @@ export function updateAmountSuccess(id, amount) {
     amount,
   };
 }
+
+export function checkout() {
+  return {
+    type: '@cart/CHECKOUT',
+  };
+}
