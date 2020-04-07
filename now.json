@@ -1,0 +1,8 @@
+{
+  "build": {
+    "env": {
+      "REACT_APP_GITHUB_TOKEN": "@react_app_github_token",
+      "REACT_APP_GITHUB_ORGANIZATION": "@react_app_github_organization"
+    }
+  }
+}
