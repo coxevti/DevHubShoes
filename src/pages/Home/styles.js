@@ -1,12 +1,28 @@
 import styled from 'styled-components';
 
+export const MemberActions = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 64px;
+  padding: 20px 0 0 20px;
+`;
+
+export const Select = styled.select`
+  font-size: 1.5rem;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Comic Neue', cursive;
+`;
+
 export const MemberList = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   list-style: none;
   padding: 20px;
-  margin-top: 64px;
 
   @media (max-width: 450px) {
     display: grid;
