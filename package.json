@@ -27,6 +27,15 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "@testing-library/react/dont-cleanup-after-each",
+      "@testing-library/jest-dom/extend-expect"
+    ],
+    "moduleNameMapper": {
+      "^~/(.*)": "<rootDir>/src/$1"
+    }
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -43,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-root-import": "^6.5.0",
