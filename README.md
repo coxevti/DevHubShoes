@@ -22,6 +22,10 @@ Estas instruções irão fazer com que você tenha uma cópia do projeto em func
  git clone https://valdircoxevdev@bitbucket.org/valdircoxevdev/devhubshoes.git
  # Entre na pasta projeto
  cd devhubshoes
+ # Adicionar variavel de ambiente REACT_APP_GITHUB_TOKEN
+ cp .env.example .env
+ # Criar um token Personal access tokens GitHub
+ https://help.github.com/pt/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
  # Instale o pacotes
  yarn
  # Execute projeto
